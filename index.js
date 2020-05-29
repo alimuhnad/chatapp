@@ -5,20 +5,27 @@ let io = require('socket.io')(server);
 io.on('connection', (socket) => {
  
   socket.on('disconnect', function(){
-    io.emit('users-changed', {user: socket.username, event: 'left'});   
+    io.emit(socket.roomid, {msg: '',user: socket.username, event: 'left' });  
+   // io.emit('users-changed', {user: socket.username, event: 'left'});   
   });
  
   //set name and room
   socket.on('set-name', (data) => {
     socket.username = data.name;
-    io.to(socket.room).emit('users-changed', {user: data.name, event: 'joined'});    
+    socket.roomid = data.room
+    io.emit(data.room, {msg: '',user: socket.username, event: 'joined' }); 
+   // io.emit('users-changed', {user: socket.name, event: 'joined'});    
   });
 
   //send the masg with the room id 
   socket.on('chat', (message) => {
-    io.emit(message.id, {msg: message.text, user: socket.username, createdAt: new Date()});   
+    if (message.typping == true) {
+      io.emit(message.id, {msg: message.text, user: socket.username,typping:true});   
+    } else {
+      io.emit(message.id, {msg: message.text, user: socket.username, createdAt: new Date()});   
+    }
   });
-  
+
 });
  
 var port = process.env.PORT || 3001;
