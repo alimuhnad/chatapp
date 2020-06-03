@@ -5,7 +5,7 @@ let io = require('socket.io')(server);
 io.on('connection', (socket) => {
  
   socket.on('disconnect', function(){
-    io.emit(socket.roomid, {msg: '',user: socket.username, event: 'left' });  
+    io.emit(socket.roomid, {msg: ' ... غادر الغرفة',user: socket.username, event: 'left' });  
    // io.emit('users-changed', {user: socket.username, event: 'left'});   
   });
  
@@ -13,7 +13,7 @@ io.on('connection', (socket) => {
   socket.on('set-name', (data) => {
     socket.username = data.name;
     socket.roomid = data.room
-    io.emit(data.room, {msg: '',user: socket.username, event: 'joined' }); 
+    io.emit(data.room, {msg: ' ... انظم الى المحادثة',user: socket.username, event: 'joined' }); 
    // io.emit('users-changed', {user: socket.name, event: 'joined'});    
   });
 
@@ -21,10 +21,16 @@ io.on('connection', (socket) => {
   socket.on('chat', (message) => {
     if (message.typping == true) {
       io.emit(message.id, {msg: message.text, user: socket.username,typping:true});   
+    } else if(message.img == true)  {
+      io.emit(message.id, {msg: message.text, user: socket.username,img: true});   
     } else {
       io.emit(message.id, {msg: message.text, user: socket.username, createdAt: new Date()});   
     }
   });
+
+
+ 
+
 
 });
  
