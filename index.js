@@ -30,6 +30,13 @@ io.on('connection', (socket) => {
 
 
  
+  //send the masg with the room id with img
+  socket.on('img', (message) => {
+    
+     if(message.img == true)  {
+      io.emit(message.id, {textimg: message.text, user: socket.username,img: true});   
+    } 
+  });
 
 
 });
