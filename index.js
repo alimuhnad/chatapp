@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
     if (message.typping == true) {
       io.emit(message.id, {msg: message.text, user: socket.username,typping:true});   
     } else if(message.img == true)  {
-      io.emit(message.id, {msg: message.text, user: socket.username,img: true});   
+           io.emit(message.id, {textimg: message.text, user: socket.username,img: true});   
     } else {
       io.emit(message.id, {msg: message.text, user: socket.username, createdAt: new Date()});   
     }
